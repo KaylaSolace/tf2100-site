@@ -1,23 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>trenches cosmetics cutoff</title>
-</head>
+    
+    <style>
+      .steamUserIcon > img {
+        clip-path: circle(45% at center);
+        width: 4em;
+      }
+    </style>
 
-<body style="font-family: sans-serif;text-align: center;margin-top: 2.3%;font-size: 140%;">
+    <script async>
+      // 🟥
+      // LAST UPDATED TIMESTAMP
+      const unixTimestamp = 1725330675;
+      const topD = 0;
+      const minD = 51.0;
+      
+      // Convert Unix timestamp to milliseconds
+      const date = new Date(unixTimestamp * 1000);
+
+      // Format the date and time as "date, 3-letter month, year, hour:minute:second"
+      const options = {
+          weekday: 'long', // e.g., 'Monday'
+          day: '2-digit', // e.g., '26'
+          month: 'short', // e.g., 'Aug'
+          year: 'numeric', // e.g., '2023'
+          hour: '2-digit', // e.g., '14'
+          minute: '2-digit', // e.g., '30'
+          second: '2-digit', // e.g., '45'
+          timeZoneName: 'short' // e.g., 'GMT', 'PDT'
+      };
+
+      const readableDate = date.toLocaleString('default', options);
+
+      // Get the user's timezone name
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+
+      // Lets instead store people as a list of objects, that way we can store their avatar, name, and custom vanity url from steamAPI
+      const topDonors = [
+        {
+          name: "763",
+          avatar: "https://avatars.steamstatic.com/faf7d0f6cb0671391a91bce191db945ed3fd53a2_full.jpg",
+          url: "https://steamcommunity.com/id/763x/"
+        }, 
+        {
+          name: "goose",
+          avatar: "https://avatars.steamstatic.com/9ef7e3b22e7a0717c75fa980ca9a03f026f76478_full.jpg",
+          url: "https://steamcommunity.com/id/IOOIIOIOIOOIIOII/"
+        },
+        {
+          name: "Kayla Solace",
+          avatar: "https://avatars.steamstatic.com/ae7c836f5b6bf743315a31674dfe0698b97fa9a9_full.jpg",
+          url: "https://steamcommunity.com/id/kaylasolace/"
+        },
+        {
+          name: "Technetium",
+          avatar: "https://avatars.steamstatic.com/b98b4a296a69766ee859a0b8506d48cc002ebbc1_full.jpg",
+          url: "https://steamcommunity.com/id/TechnetiumTechnologist/"
+        },
+        {
+          name: "RADICAL TF2 STUNTMAN",
+          avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/c2/c21187af0fdcf4516c6d898b005934d12af15b4c_full.jpg",
+          url: "https://steamcommunity.com/id/9vc/"
+        }
+      ]
+      
+
+      // Move DOM modification into an onload, allowing the browser to continue parsing the DOM while running the JS that doesn't touch it.
+      window.onload = function() {
+        const donorList = document.getElementById('topDonors').children
+        
+        // Set all href attributes at once - Kayla
+        topDonors.forEach((donor, index) => {
+          if (donor) {
+            donorList[index].href = donor.url
+            donorList[index].children[0].src = donor.avatar // This is kinda dumb and I should really query it, but eh, it's the only element.
+            donorList[index].title = donor.name
+          } else {
+            donorList[index].style.display = 'none'
+          }
+        })
+
+        // Display the Unix timestamp, human-readable date, and detected timezone
+        //document.getElementById('unixTimestamp').textContent = unixTimestamp;
+        document.getElementById('readableDate').textContent = readableDate;
+        document.getElementById('timezone').textContent = timezone;
+        
+        // Tbh I dont know why this isn't SSR'd - Kayla
+        const num_allowed = 5;
+        const numAllowedElements = document.querySelectorAll('.numAllowed');
+        numAllowedElements.forEach(function (element) {
+            element.textContent = num_allowed;
+        });
+        
+        // 🟥
+        document.getElementById('minD').textContent = minD;
+        //document.getElementById('topD').textContent = topD;
+        document.getElementById('timesince').innerText = timeSince(unixTimestamp); 
+      }
+
+      function timeSince(unixTimestamp) {
+        const seconds = Math.floor((new Date() - new Date(unixTimestamp * 1000)) / 1000);
+
+        let interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) {
+          return interval + (interval === 1 ? " year ago" : " years ago");
+        }
+
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) {
+          return interval + (interval === 1 ? " month ago" : " months ago");
+        }
+
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) {
+          return interval + (interval === 1 ? " day ago" : " days ago");
+        }
+
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) {
+          return interval + (interval === 1 ? " hour ago" : " hours ago");
+        }
+
+        interval = Math.floor(seconds / 60);
+        if (interval >= 1) {
+          return interval + (interval === 1 ? " minute ago" : " minutes ago");
+        }
+
+        return Math.floor(seconds) + (seconds === 1 ? " second ago" : " seconds ago");
+      } 
+    </script>
+  </head>
+  <body style="font-family: sans-serif;text-align: center;margin-top: 2.3%;font-size: 140%;">
     <h1 style="line-height: 80%;">trenches cosmetics cutoff</h1>
     <!-- <h3>Top Donator: $<span id="topD"></span></h3> -->
     <h3><a href="https://www.patreon.com/shounic">Donate</a> more than this to get hats: $<span id="minD"></span></h3>
     <!-- Placeholders to display the timestamp, human-readable date, and timezone -->
     <!-- <p>The Unix timestamp is: <span id="unixTimestamp"></span></p> -->
     <p>there can currently only be: <strong><span class="numAllowed"></span></strong> people with hat privileges</p>
-    <div id="topDonors"><a id="personA" href="#">Person 1</a> <a id="personB" href="#">Person 2</a> <a id="personC" href="#">Person 3</a>
-        <a id="personD" href="#">Person 4</a> <a id="personE" href="#">Person 5</a></div>
-    <span style="font-size: 85%;line-height: 80%;"><p>(if there are less than <span class="numAllowed"></span> people with hat permissions then it means enough people tied</p><p>that it's past capacity and someone who is tied needs to tie break)</p></span><p>Last Updated: <span id="timesince"></span> - <span id="readableDate"></span>
-        (<span id="timezone"></span>)</p>
+    <div id="topDonors">
+      <a class="steamUserIcon" href="#"><img></a>
+      <a class="steamUserIcon" href="#"><img></a>
+      <a class="steamUserIcon" href="#"><img></a>
+      <a class="steamUserIcon" href="#"><img></a>
+      <a class="steamUserIcon" href="#"><img></a>
+    </div>
+    <span style="font-size: 85%;line-height: 80%;"><p>(if there are less than <span class="numAllowed"></span> people with hat permissions then it means enough people tied</p><p>that it's past capacity and someone who is tied needs to tie break)</p></span><p>Last Updated: <span id="timesince"></span> - <span id="readableDate"></span> (<span id="timezone"></span>)</p>
     <br>
     <p style="font-size: 85%;">this website updates every XX:01 or XX:31 of the clock</p>
     <p style="font-size: 85%;">whoever are the top <strong><span class="numAllowed"></span></strong> at the moment it updates will be granted the hat privileges</p>
@@ -25,115 +157,14 @@
     <p style="font-size: 85%;">if you are a new donator, you need to register with the <a href="https://discord.com/channels/952337811032387584/1134170683040088224/1231659810962014258">message pinned in #faq</a> in the <a href="https://discord.com/invite/5RutXa3dGh">discord</a></p>
     <br>
     <span style="font-size: 80%;line-height: 80%;">
-        <p>TF2 crashes when there are too many objects at one time.</p>
-        <p>this is why nobody has hats: to cut down on how many objects</p>
-        <p>are being used, so we can at least play the video game.</p>
-        <br>
-        <p>but i'm not going to keep running the server if i'm losing money on it</p>
-        <p>so the top <strong><span class="numAllowed"></span></strong> donators will get to wear hats. (for now, will prob expand later)</p>
-        <p>this is a safe number that shouldn't cause any problems.</p>
-        <p>worst case scenario the object limit protector will eat their hats and move on</p>
+      <p>TF2 crashes when there are too many objects at one time.</p>
+      <p>this is why nobody has hats: to cut down on how many objects</p>
+      <p>are being used, so we can at least play the video game.</p>
+      <br>
+      <p>but i'm not going to keep running the server if i'm losing money on it</p>
+      <p>so the top <strong><span class="numAllowed"></span></strong> donators will get to wear hats. (for now, will prob expand later)</p>
+      <p>this is a safe number that shouldn't cause any problems.</p>
+      <p>worst case scenario the object limit protector will eat their hats and move on</p>
     </span>
-
-    <script>
-
-        // 🟥
-        const topD = 0;
-        //document.getElementById('topD').textContent = topD;
-
-        // 🟥
-        const minD = 51.0;
-        document.getElementById('minD').textContent = minD;
-
-        // 🟥
-        // LAST UPDATED TIMESTAMP
-        const unixTimestamp = 1725330676;
-
-        // Convert Unix timestamp to milliseconds
-        const date = new Date(unixTimestamp * 1000);
-
-        // Format the date and time as "date, 3-letter month, year, hour:minute:second"
-        const options = {
-            weekday: 'long', // e.g., 'Monday'
-            day: '2-digit', // e.g., '26'
-            month: 'short', // e.g., 'Aug'
-            year: 'numeric', // e.g., '2023'
-            hour: '2-digit', // e.g., '14'
-            minute: '2-digit', // e.g., '30'
-            second: '2-digit', // e.g., '45'
-            timeZoneName: 'short' // e.g., 'GMT', 'PDT'
-        };
-        const readableDate = date.toLocaleString('default', options);
-
-        // Get the user's timezone name
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-        // Display the Unix timestamp, human-readable date, and detected timezone
-        //document.getElementById('unixTimestamp').textContent = unixTimestamp;
-        document.getElementById('readableDate').textContent = readableDate;
-        document.getElementById('timezone').textContent = timezone;
-
-        const num_allowed = 5;
-        const numAllowedElements = document.querySelectorAll('.numAllowed');
-        numAllowedElements.forEach(function (element) {
-            element.textContent = num_allowed;
-        });
-
-        // 🟥
-        // JavaScript variable holding part of the URL
-        const baseURL = 'http://steamcommunity.com/profiles/';
-        const topDonors = [
-          '76561198105358204',
-          '76561197999345735', 
-          '76561198984614219', 
-          '76561198008190933', 
-          '76561198133155527'
-        ]
-
-        const donorList = document.getElementById('topDonors').children
-        
-        // Set all href attributes at once
-        topDonors.forEach((donorId, index) => {
-          if (donorId) {
-            donorList[index].href = baseURL + donorId
-          } else {
-            donorList[index].style.display = 'none'
-          }
-        }) 
-
-        function timeSince(unixTimestamp) {
-            const seconds = Math.floor((new Date() - new Date(unixTimestamp * 1000)) / 1000);
-
-            let interval = Math.floor(seconds / 31536000);
-            if (interval >= 1) {
-                return interval + (interval === 1 ? " year ago" : " years ago");
-            }
-
-            interval = Math.floor(seconds / 2592000);
-            if (interval >= 1) {
-                return interval + (interval === 1 ? " month ago" : " months ago");
-            }
-
-            interval = Math.floor(seconds / 86400);
-            if (interval >= 1) {
-                return interval + (interval === 1 ? " day ago" : " days ago");
-            }
-
-            interval = Math.floor(seconds / 3600);
-            if (interval >= 1) {
-                return interval + (interval === 1 ? " hour ago" : " hours ago");
-            }
-
-            interval = Math.floor(seconds / 60);
-            if (interval >= 1) {
-                return interval + (interval === 1 ? " minute ago" : " minutes ago");
-            }
-
-            return Math.floor(seconds) + (seconds === 1 ? " second ago" : " seconds ago");
-        }
-        document.getElementById('timesince').innerText = timeSince(unixTimestamp);
-
-    </script>
-</body>
-
+  </body>
 </html>
