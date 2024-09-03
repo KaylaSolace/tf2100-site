@@ -14,8 +14,8 @@
     <!-- Placeholders to display the timestamp, human-readable date, and timezone -->
     <!-- <p>The Unix timestamp is: <span id="unixTimestamp"></span></p> -->
     <p>there can currently only be: <strong><span class="numAllowed"></span></strong> people with hat privileges</p>
-    <p><a id="personA" href="#">Person 1</a> <a id="personB" href="#">Person 2</a> <a id="personC" href="#">Person 3</a>
-        <a id="personD" href="#">Person 4</a> <a id="personE" href="#">Person 5</a></p>
+    <div id="topDonors"><a id="personA" href="#">Person 1</a> <a id="personB" href="#">Person 2</a> <a id="personC" href="#">Person 3</a>
+        <a id="personD" href="#">Person 4</a> <a id="personE" href="#">Person 5</a></div>
     <span style="font-size: 85%;line-height: 80%;"><p>(if there are less than <span class="numAllowed"></span> people with hat permissions then it means enough people tied</p><p>that it's past capacity and someone who is tied needs to tie break)</p></span><p>Last Updated: <span id="timesince"></span> - <span id="readableDate"></span>
         (<span id="timezone"></span>)</p>
     <br>
@@ -38,22 +38,22 @@
     <script>
 
         // 🟥
-var topD = 0;
+        const topD = 0;
         //document.getElementById('topD').textContent = topD;
 
         // 🟥
-var minD = 51.0;
+        const minD = 51.0;
         document.getElementById('minD').textContent = minD;
 
         // 🟥
         // LAST UPDATED TIMESTAMP
-var unixTimestamp = 1725330676;
+        const unixTimestamp = 1725330676;
 
         // Convert Unix timestamp to milliseconds
-        var date = new Date(unixTimestamp * 1000);
+        const date = new Date(unixTimestamp * 1000);
 
         // Format the date and time as "date, 3-letter month, year, hour:minute:second"
-        var options = {
+        const options = {
             weekday: 'long', // e.g., 'Monday'
             day: '2-digit', // e.g., '26'
             month: 'short', // e.g., 'Aug'
@@ -63,50 +63,43 @@ var unixTimestamp = 1725330676;
             second: '2-digit', // e.g., '45'
             timeZoneName: 'short' // e.g., 'GMT', 'PDT'
         };
-        var readableDate = date.toLocaleString('default', options);
+        const readableDate = date.toLocaleString('default', options);
 
         // Get the user's timezone name
-        var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
         // Display the Unix timestamp, human-readable date, and detected timezone
         //document.getElementById('unixTimestamp').textContent = unixTimestamp;
         document.getElementById('readableDate').textContent = readableDate;
         document.getElementById('timezone').textContent = timezone;
 
-        var num_allowed = 5;
-        var numAllowedElements = document.querySelectorAll('.numAllowed');
+        const num_allowed = 5;
+        const numAllowedElements = document.querySelectorAll('.numAllowed');
         numAllowedElements.forEach(function (element) {
             element.textContent = num_allowed;
         });
 
         // 🟥
         // JavaScript variable holding part of the URL
-        var baseURL = 'http://steamcommunity.com/profiles/';
-var person1var = '76561198105358204';
-var person2var = '76561197999345735';
-var person3var = '76561198984614219';
-var person4var = '76561198008190933';
-var person5var = '76561198133155527';
+        const baseURL = 'http://steamcommunity.com/profiles/';
+        const topDonors = [
+          '76561198105358204',
+          '76561197999345735', 
+          '76561198984614219', 
+          '76561198008190933', 
+          '76561198133155527'
+        ]
 
-        // Set the href attribute of the link with the dynamic URL
-        document.getElementById('personA').href = baseURL + person1var;
-        document.getElementById('personB').href = baseURL + person2var;
-        document.getElementById('personC').href = baseURL + person3var;
-        document.getElementById('personD').href = baseURL + person4var;
-        document.getElementById('personE').href = baseURL + person5var;
-
-        if (person2var == '') {
-            document.getElementById('personB').textContent = '';
-        }
-        if (person3var == '') {
-            document.getElementById('personC').textContent = '';
-        }
-        if (person4var == '') {
-            document.getElementById('personD').textContent = '';
-        }
-        if (person5var == '') {
-            document.getElementById('personE').textContent = '';
-        }
+        const donorList = document.getElementById('topDonors').children
+        
+        // Set all href attributes at once
+        topDonors.forEach((donorId, index) => {
+          if (donorId) {
+            donorList[index].href = baseURL + donorId
+          } else {
+            donorList[index].style.display = 'none'
+          }
+        }) 
 
         function timeSince(unixTimestamp) {
             const seconds = Math.floor((new Date() - new Date(unixTimestamp * 1000)) / 1000);
